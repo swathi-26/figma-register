@@ -1,0 +1,205 @@
+<!-- MultiStep Form -->
+<div class="container-fluid" id="grad1">
+  <div class="row justify-content-center">
+      <div class="row">
+          <div *ngIf='!verifiedUser' class="col-md-12 contentHolder">
+                  <ul id="progressbar">
+                      <li [ngClass]="[activeTab == 0 ? 'active' : '!active']" id="personal">Personal Details</li>
+                      <li [ngClass]="[activeTab == 1 ? 'active' : '!active']" id="company">Company Details</li>
+                      <li [ngClass]="[activeTab == 2 ? 'active' : '!active']" id="verification">Verification</li>
+                  </ul>
+                  <div class="heading-message">
+                    <div *ngIf='activeTab == 0'>
+                      <h2 class="fs-title">Add your Personal Details</h2>
+                      <span>Loren Ipsum is simply dummy text for printing and typing industry</span>
+                    </div>
+                    <div *ngIf='activeTab == 1'>
+                      <h2 class="fs-title">Add your Company Details</h2>
+                      <span>Loren Ipsum is simply dummy text for printing and typing industry</span>
+                    </div>
+                    <div *ngIf='activeTab == 2'>
+                      <h2 class="fs-title">Enter you OTP</h2>
+                      <span>For your security, we need to verify yor identity. 
+                        We have sent a 5-digit code to <strong>{{companyDetails.value.email}}</strong>. Please enter it below</span>
+                    </div>
+                  </div>
+
+                  <div *ngIf='activeTab == 0' class="form-card">
+                    <form [formGroup]='personalDetails'>
+                      <div class="form-group">
+                        <label>
+                          Full Name 
+                          <span class="text-danger" *ngIf="(personaldetailSubmitted && 
+                          personalDetailsControl.fullName.errors?.required)">
+                          Required
+                        </span>
+                        <span class="text-danger" *ngIf="(personaldetailSubmitted && 
+                          personalDetailsControl.fullName.errors?.pattern)">
+                          Please enter a valid full name
+                        </span>
+                        </label>
+                        <input type='text' class="form-control" formControlName='fullName'>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          Gender
+                        </label>
+                        <div class="form-control btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-sm btn-outline-dark">
+                            <input class="form-control" formControlName='gender' type="radio" 
+                            name="gender" value="Male"> Male
+                          </label>
+                          <label class="btn btn-sm btn-outline-dark">
+                            <input class="form-control" formControlName='gender' type="radio" 
+                            name="gender" value="Female"> Female
+                          </label>
+                          <label class="btn btn-sm btn-outline-dark">
+                            <input class="form-control" formControlName='gender' type="radio" 
+                            name="gender" value="Other"> Other
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          Country<span class="text-danger" *ngIf="(personaldetailSubmitted && 
+                          personalDetailsControl.country.errors?.required)">
+                            Required
+                          </span>
+                        </label>
+                        <select class="form-control" formControlName='country' (change)='onCountryChange()'>
+                          <option *ngFor='let country of countryList' value='{{country}}'>{{country}}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          State
+                        </label>
+                        <select class="form-control" formControlName='state'>
+                          <option *ngFor='let state of stateList' value='{{state}}'>{{state}}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Phone
+                          <span class="text-danger" *ngIf="(personaldetailSubmitted && 
+                          personalDetailsControl.phone.errors?.required)">
+                          Required
+                          </span>
+                          <span class="text-danger" *ngIf="(personaldetailSubmitted && 
+                          (personalDetailsControl.phone.errors?.min || personalDetailsControl.phone.errors?.max))">
+                          Please enter 10 digits
+                          </span>
+                        </label>
+                        <input type='number' class="form-control" formControlName='phone'
+                        (keypress)='numberValidation($event)'>
+                        
+                      </div>
+                    <button type="submit" class="btn btn-warning btn-lg btn-block" (click)='next()'>Next</button>
+                  </form>
+                  </div>
+
+                  <div *ngIf='activeTab == 1' class="form-card">
+                    <form [formGroup]='companyDetails'>
+                      <label class="imgLabel">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                          <img *ngIf='!image' src='../../assets/upload-icon.png' [height]='60' [width]='60'>
+                          <img *ngIf='image' [src]='image' [height]='60' [width]='60'>
+                        </div>
+                        <input #imageInput type="file" accept="image/*" (change)="upload($event.target.files)">
+                        <div class="col-sm-9 col-md-9 col-lg-9 imgText">
+                          Upload your company logo
+                        </div>
+                      </label>
+                    <div class="form-group">
+                      <label>Company Name
+                        <span class="text-danger" *ngIf="(companydetailSubmitted && 
+                          companyDetailsControl.companyName.errors?.required)">
+                          Required
+                        </span>
+                        <span class="text-danger" *ngIf="(companydetailSubmitted && 
+                          companyDetailsControl.companyName.errors?.pattern)">
+                          Please enter a valid Company name
+                        </span>
+                      </label>
+                      <input type='text' class="form-control" formControlName='companyName'>
+                    </div>
+                    <div class="form-group">
+                      <label>Email ID
+                        <span class="text-danger" *ngIf="(companydetailSubmitted && 
+                          companyDetailsControl.email.errors?.required)">
+                          Required
+                        </span>
+                        <span class="text-danger" *ngIf="(companydetailSubmitted && 
+                          companyDetailsControl.email.pattern?.required)">
+                          Please enter a valid Email ID
+                        </span>
+                      </label>
+                      <input type='text' class="form-control" formControlName='email'>
+                    </div>
+                    <div class="form-group">
+                      <label>Job Title
+                        <span class="text-danger" *ngIf="(companydetailSubmitted && 
+                          companyDetailsControl.jobTitle.errors?.required)">
+                          Required
+                        </span>
+                        <span class="text-danger" *ngIf="(companydetailSubmitted && 
+                          companyDetailsControl.jobTitle.errors?.pattern)">
+                          Please enter a valid job title
+                        </span>
+                      </label>
+                      <input type='text' class="form-control" formControlName='jobTitle'>
+                    </div>
+                    <div class="form-group">
+                      <label>Years of Experience
+                        <span class="text-danger" *ngIf="(companydetailSubmitted && 
+                          (companyDetailsControl.experience.errors?.min || companyDetailsControl.experience.errors?.max))">
+                          Please enter a valid experience
+                        </span>
+                      </label>
+                      <input type='number' class="form-control" formControlName='experience'
+                      (keypress)='numberValidation($event)'>
+                    </div>
+                    <div>
+                      <label class="container">
+                        <input type="checkbox" (change)='isTermsChecked = !isTermsChecked'>
+                        <span class="checkmark"></span>
+                      </label>
+                      <span class="terms">I accept the <a>Terms and Conditions</a></span>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        <button type="button" class="btn btn-secondary btn-lg btn-block disabled" (click)='previous()'>Back</button>
+                      </div>
+                      <div class="col-sm-1 col-md-1 col-lg-1"></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8">
+                        <button type="button" class="btn btn-warning btn-lg btn-block" [disabled]='!isTermsChecked' (click)='next()'>Send OTP</button>
+                      </div>
+                    </div>
+                  </form>
+                  </div>
+
+                  <div *ngIf='activeTab == 2' class="form-card">
+                    <label>Enter your code</label>
+                    <ng-otp-input  (onInputChange)="onOtpChange($event)" [config]="config"></ng-otp-input>
+                    <div class="row">
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        <button type="button" class="btn btn-secondary btn-lg btn-block disabled" (click)='previous()'>Back</button>
+                      </div>
+                      <div class="col-sm-1 col-md-1 col-lg-1"></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8">
+                        <button type="button" class="btn btn-warning btn-lg btn-block" [disabled]='otp.length!=5' (click)='next()'>Verify</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf='activeTab == 2' class="form-card">
+                    <span>Didnt receive the mail? Check your spam filter for an email from <a>name@domain.com</a></span>
+                  </div>
+              <div *ngIf='activeTab == 0' class='footertext'>Already a member? <a href="#">Log in</a></div>
+            
+          </div>
+          <div *ngIf='verifiedUser' class="successMessage">
+            <h2 class="fs-title">Verification Success</h2>
+            <span>Thanks for joining Figma. <a>Click here</a> to go to Home Page</span>
+          </div>
+      </div>
+  </div>
+</div>
