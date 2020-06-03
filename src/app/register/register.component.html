@@ -75,6 +75,7 @@
                           State
                         </label>
                         <select class="form-control" formControlName='state'>
+                          <option hidden></option>
                           <option *ngFor='let state of stateList' value='{{state}}'>{{state}}</option>
                         </select>
                       </div>
@@ -133,7 +134,7 @@
                           Required
                         </span>
                         <span class="text-danger" *ngIf="(companydetailSubmitted && 
-                          companyDetailsControl.email.pattern?.required)">
+                          companyDetailsControl.email.errors?.pattern)">
                           Please enter a valid Email ID
                         </span>
                       </label>

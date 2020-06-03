@@ -27,7 +27,7 @@ html {
     background: white;
     border: none;
     border-radius: 2px;
-    padding: 10px 30px;
+    padding: 18px 30px;
     box-sizing: border-box;
     width: 94%;
     margin: 0 435px;
@@ -35,8 +35,9 @@ html {
     text-align: left;
     color: #9E9E9E;
     width: 400px;
-    line-height: 2;
+    line-height: 2.5;
     margin-bottom: 3px;
+    box-shadow: 0 0 0 0.1rem rgb(239, 237, 243)
 }
 
 .successMessage{

@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
   inputStyles: {
     'width': '50px',
     'height': '50px',
-    'margin-right': '14px'
+    'margin-right': '18px'
     }
   };
   telOptions = {initialCountry: 'in', preferredCountries: []};
@@ -131,7 +131,9 @@ export class RegisterComponent implements OnInit {
 
   onCountryChange(){
     this.personalDetailsControl['state'].enable();
-    this.stateList = this.countryStateMap.find(ele=> ele['country'] == this.personalDetails.value.country)['states']
+    this.stateList = this.countryStateMap.find(ele=> ele['country'] == this.personalDetails.value.country)['states'];
+    this.personalDetails.value.state = null;
+    
   }
 
   telInputObject(event){
