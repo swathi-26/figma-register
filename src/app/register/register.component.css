@@ -10,7 +10,7 @@ html {
 #grad1 {
     font-family: inherit;
     background-color: whitesmoke;
-    height: 560px;
+    height: 577px;
 }
 
 .form-group{
@@ -312,3 +312,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+::-webkit-input-placeholder {
+    color: lightgray;
+  }

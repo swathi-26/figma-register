@@ -30,9 +30,11 @@ export class RegisterComponent implements OnInit {
     'margin-right': '14px'
     }
   };
+  telOptions = {initialCountry: 'in', preferredCountries: []};
   countryList;
   stateList;
-  countryStateMap
+  countryStateMap;
+  countryCode ="91";
   gender;
   constructor(private formBuilder: FormBuilder, private registerService: RegisterService) {
     this.registerService.getCountryData().subscribe((data) => {
@@ -49,14 +51,14 @@ export class RegisterComponent implements OnInit {
       'gender': new FormControl(null),
       'country': new FormControl(null, Validators.required),
       'state': new FormControl({value:null,disabled: true}),
-      'phone': new FormControl(null, [Validators.required, Validators.min(1000000000), Validators.max(9999999999)]),
+      'phone': new FormControl(null, [Validators.required, Validators.pattern("^[\(0-9.+-\\s\)]{8,15}$")]),
     })
 
     this.companyDetails = this.formBuilder.group({
       'companyName': new FormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z\\s]{3,}$")]),
       'email': new FormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}$")]),
       'jobTitle': new FormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z\\s]{3,}$")]),
-      'experience': new FormControl(null, [ Validators.min(0), Validators.max(50)]),
+      'experience': new FormControl(null, [Validators.pattern("^[0-9.]{1,3}$"),Validators.min(0), Validators.max(50)]),
     })
   }
 
@@ -89,6 +91,7 @@ export class RegisterComponent implements OnInit {
     
     if(this.activeTab == 0){
       this.personaldetailSubmitted = true;
+      this.personalDetails.value.phone = "+" + this.countryCode + this.personalDetails.value.phone;
       let gender = document.getElementsByName('gender');
       for(var i=0; i<gender.length;i++){
         if(gender[i]['checked'] == true){
@@ -126,19 +129,16 @@ export class RegisterComponent implements OnInit {
     this.otp = event;
   }
 
-  numberValidation(evt) {
-    //validate number
-    evt = (evt) ? evt : window.event;
-    let charCode = (evt.which) ? evt.which : evt.keyCode;
-    if((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 32 && charCode !== 43){  
-    evt.preventDefault();
-    } else {
-      return true;
-    }
-  }
-
   onCountryChange(){
     this.personalDetailsControl['state'].enable();
     this.stateList = this.countryStateMap.find(ele=> ele['country'] == this.personalDetails.value.country)['states']
+  }
+
+  telInputObject(event){
+    console.log("telInputObject", event);
+  }
+  
+  onCountryCodeChange(event){
+    this.countryCode = event['dialCode']
   }
 }

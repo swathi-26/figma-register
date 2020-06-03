@@ -85,13 +85,17 @@
                           Required
                           </span>
                           <span class="text-danger" *ngIf="(personaldetailSubmitted && 
-                          (personalDetailsControl.phone.errors?.min || personalDetailsControl.phone.errors?.max))">
-                          Please enter 10 digits
+                          (personalDetailsControl.phone.errors?.min || 
+                          personalDetailsControl.phone.errors?.max ||
+                          personalDetailsControl.phone.errors?.pattern))">
+                          Please enter a valid Phone number
                           </span>
                         </label>
-                        <input type='number' class="form-control" formControlName='phone'
-                        (keypress)='numberValidation($event)'>
-                        
+                        <br>
+                        <input type="text" style='width: 340px;' ng2TelInput [ng2TelInputOptions]="telOptions"
+                        (intlTelInputObject)="telInputObject($event)" (countryChange)="onCountryCodeChange($event)" 
+                        maxlength="15" class="form-control" formControlName='phone'/>
+                       
                       </div>
                     <button type="submit" class="btn btn-warning btn-lg btn-block" (click)='next()'>Next</button>
                   </form>
@@ -151,12 +155,13 @@
                     <div class="form-group">
                       <label>Years of Experience
                         <span class="text-danger" *ngIf="(companydetailSubmitted && 
-                          (companyDetailsControl.experience.errors?.min || companyDetailsControl.experience.errors?.max))">
+                          (companyDetailsControl.experience.errors?.min || 
+                          companyDetailsControl.experience.errors?.max || 
+                          companyDetailsControl.experience.errors?.pattern))">
                           Please enter a valid experience
                         </span>
                       </label>
-                      <input type='number' class="form-control" formControlName='experience'
-                      (keypress)='numberValidation($event)'>
+                      <input type='text' class="form-control" formControlName='experience' >
                     </div>
                     <div>
                       <label class="container">

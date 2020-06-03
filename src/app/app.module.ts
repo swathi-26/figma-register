@@ -8,6 +8,7 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {Ng2TelInputModule} from 'ng2-tel-input';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule, 
     ReactiveFormsModule,
     NgOtpInputModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    Ng2TelInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
